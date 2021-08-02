@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121015',
-    paddingVertical: 70,
+    paddingTop: 70,
+    paddingBottom: 10,
     paddingHorizontal: 30
   },
   title: {
