@@ -34,6 +34,10 @@ export function Home() {
     }
   }
 
+  function handleRemoveSkill(idSkill: string) {
+    setMySkills(oldSkills => oldSkills.filter(skill => skill.id !== idSkill));
+  }
+
   useEffect(() => {
     const currentHour = new Date().getHours();
     
@@ -67,7 +71,13 @@ export function Home() {
         data={mySkills}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <SkillCard skill={item.name} />}/>
+        renderItem={({ item }) => (
+          <SkillCard
+            skill={item.name}
+            onLongPress={() => handleRemoveSkill(item.id)}
+          />
+        )}
+      />
     </View>
   );
 };
