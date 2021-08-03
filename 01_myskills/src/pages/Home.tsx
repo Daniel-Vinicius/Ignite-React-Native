@@ -20,9 +20,10 @@ export function Home() {
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState<Skill[]>([]);
   const [greetings, setGreetings] = useState('');
+  const newSkillIsEmpty = Boolean(!newSkill.trim());
 
   function handleAddNewSkill() {
-    if (newSkill.trim()) {
+    if (!newSkillIsEmpty) {
       const data = {
         id: String(new Date().getTime()),
         name: newSkill,
@@ -53,7 +54,13 @@ export function Home() {
         onChangeText={setNewSkill}
       />
 
-      <Button onPress={handleAddNewSkill} />
+      <Button 
+        onPress={handleAddNewSkill}
+        title="Add"
+        disabled={Boolean(!newSkill.trim())}
+        styleAdditional={newSkillIsEmpty && { backgroundColor: '#8e69ca9d' }}
+      />
+
       <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
 
       <FlatList 
