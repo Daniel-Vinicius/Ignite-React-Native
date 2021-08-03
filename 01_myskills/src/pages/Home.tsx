@@ -11,14 +11,24 @@ import {
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
+interface Skill {
+  id: string;
+  name: string;
+};
+
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
-  const [mySkills, setMySkills] = useState([]);
+  const [mySkills, setMySkills] = useState<Skill[]>([]);
   const [greetings, setGreetings] = useState('');
 
   function handleAddNewSkill() {
     if (newSkill.trim()) {
-      setMySkills(oldState => [...oldState, newSkill]);
+      const data = {
+        id: String(new Date().getTime()),
+        name: newSkill,
+      };
+
+      setMySkills(oldState => [...oldState, data]);
       setNewSkill('');
     }
   }
@@ -49,8 +59,8 @@ export function Home() {
       <FlatList 
         data={mySkills}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => item}
-        renderItem={({ item }) => <SkillCard skill={item} />}/>
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => <SkillCard skill={item.name} />}/>
     </View>
   );
 };
