@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { HighlightCard } from '../../components/HighlightCard';
-import { TransactionCard } from '../../components/TransactionCard';
+import { TransactionCard, ITransactionCard } from '../../components/TransactionCard';
+
+import { transactions } from '../../utils/data';
 
 import {
   Container,
@@ -16,7 +18,12 @@ import {
   HighlightCards,
   Transactions,
   Title,
+  TransactionsList,
 } from './styles';
+
+export interface DataListProps extends ITransactionCard {
+  id: string;
+}
 
 export function Dashboard() {
   return (
@@ -44,7 +51,13 @@ export function Dashboard() {
 
       <Transactions>
         <Title>Listagem</Title>
-        <TransactionCard />
+
+        <TransactionsList
+          data={transactions}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <TransactionCard data={item} /> }
+        />
+
       </Transactions>
     </Container>
   );
