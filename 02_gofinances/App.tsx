@@ -1,6 +1,8 @@
 import React from 'react';
-import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
+
+import AppLoading from 'expo-app-loading';
+import { StatusBar } from 'expo-status-bar';
 
 import {
   useFonts,
@@ -26,6 +28,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Dashboard />
+      <StatusBar style="light" translucent />
     </ThemeProvider>
   );
 }
