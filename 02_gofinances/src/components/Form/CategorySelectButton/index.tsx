@@ -6,13 +6,14 @@ import {
   Icon,
 } from './styles';
 
-interface CategorySelectProps {
+interface CategorySelectButtonProps {
   title: string;
+  onPress: () => void;
 }
 
-export function CategorySelect({ title }: CategorySelectProps) {
+export function CategorySelectButton({ title, onPress }: CategorySelectButtonProps) {
   return (
-    <Container>
+    <Container onPress={onPress}>
       <Category>{title}</Category>
       <Icon name="chevron-down" />
     </Container>
