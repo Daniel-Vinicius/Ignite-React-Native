@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Keyboard,
   Alert,
@@ -6,10 +6,13 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import uuid from 'react-native-uuid';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -43,8 +46,9 @@ const schema = Yup.object().shape({
 export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const collectionKeyTransactions = '@gofinances:transactions';
+  const navigation = useNavigation();
 
+  const collectionKeyTransactions = '@gofinances:transactions';
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
@@ -76,10 +80,12 @@ export function Register() {
     }
 
     const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
-      category: category.key
+      category: category.key,
+      date: new Date(),
     };
 
     try {
@@ -94,28 +100,14 @@ export function Register() {
       reset();
       setTransactionType('');
       setCategory({ key: 'category', name: 'Categoria' });
+
+      // @ts-ignore
+      navigation.navigate('Listagem');
     } catch (error) {
       console.log(error);
       Alert.alert("Não foi possível salvar");
     }
   }
-
-  useEffect(() => {
-    async function loadData() {
-      console.log("Get All Keys", await AsyncStorage.getAllKeys());
-      const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
-      if (transactionsStringified) {
-        const transactions = JSON.parse(transactionsStringified);
-        console.log("Transactions", transactions);
-      }
-    }
-
-    async function removeAll() {
-      await AsyncStorage.removeItem(collectionKeyTransactions);
-    }
-
-    // removeAll();
-  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
