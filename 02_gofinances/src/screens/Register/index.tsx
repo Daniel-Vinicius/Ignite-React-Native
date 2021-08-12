@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Keyboard,
   Alert,
@@ -8,6 +8,7 @@ import {
 
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useForm } from 'react-hook-form';
 
 import { InputForm } from '../../components/Form/InputForm';
@@ -42,13 +43,14 @@ const schema = Yup.object().shape({
 export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const collectionKeyTransactions = '@gofinances:transactions';
 
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
   });
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
 
@@ -64,7 +66,7 @@ export function Register() {
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if (!transactionType) {
       return Alert.alert('Selecione o tipo da transação.');
     }
@@ -80,8 +82,30 @@ export function Register() {
       category: category.key
     };
 
-    console.log(data);
+    try {
+      await AsyncStorage.setItem(collectionKeyTransactions, JSON.stringify(data));
+
+      reset();
+      setTransactionType('');
+      setCategory({ key: 'category', name: 'Categoria' });
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não foi possível salvar");
+    }
   }
+
+  useEffect(() => {
+    async function loadData() {
+      console.log("Get All Keys", await AsyncStorage.getAllKeys());
+      const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
+      if (transactionsStringified) {
+        const transactions = JSON.parse(transactionsStringified);
+        console.log("Transactions", transactions);
+      }
+    }
+
+    loadData();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
