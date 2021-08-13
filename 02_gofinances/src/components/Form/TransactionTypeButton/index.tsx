@@ -9,13 +9,13 @@ import {
 } from './styles';
 
 const icons = {
-  up: 'arrow-up-circle',
-  down: 'arrow-down-circle',
+  positive: 'arrow-up-circle',
+  negative: 'arrow-down-circle',
 };
 
 interface TransactionTypeButtonProps extends RectButtonProps {
   title: string;
-  type: 'up' | 'down';
+  type: 'positive' | 'negative';
   isActive: boolean;
 }
 
