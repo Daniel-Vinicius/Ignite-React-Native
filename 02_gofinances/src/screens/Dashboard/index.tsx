@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, ITransactionCard } from '../../components/TransactionCard';
-
-import { transactions } from '../../utils/data';
 
 import {
   Container,
@@ -27,6 +26,42 @@ export interface DataListProps extends ITransactionCard {
 }
 
 export function Dashboard() {
+  const [transactions, setTransactions] = useState<DataListProps[]>([]);
+  const collectionKeyTransactions = '@gofinances:transactions';
+
+  async function loadTransactions() {
+    const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
+    const transactionsParsed = transactionsStringified ? JSON.parse(transactionsStringified) : [];
+
+    const transactionsFormatted: DataListProps[] = transactionsParsed.map((item: any) => {
+      const amount = Number(item.amount).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+
+      const date = Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).format(new Date(item.date));
+
+      return {
+        id: item.id,
+        name: item.name,
+        amount,
+        type: item.transactionType === 'up' ? 'positive' : 'negative',
+        category: item.category,
+        date,
+      };
+    });
+
+    setTransactions(transactionsFormatted);
+  }
+
+  useEffect(() => {
+    loadTransactions();
+  }, []);
+
   return (
     <Container>
       <Header>

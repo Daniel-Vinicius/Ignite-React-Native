@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 
