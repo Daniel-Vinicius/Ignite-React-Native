@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { useTheme } from 'styled-components';
@@ -7,6 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, ITransactionCard } from '../../components/TransactionCard';
+
+import { formatToBRL } from '../../utils/formatToBRL';
+import { getLastTransactionDate } from '../../utils/getLastTransactionDate';
 
 import {
   Container,
@@ -32,21 +35,13 @@ export interface DataListProps extends ITransactionCard {
 
 interface HighlightProps {
   amount: string;
+  dateLastTransaction: string;
 }
 
 interface HighlightData {
   entries: HighlightProps;
   outputs: HighlightProps;
   total: HighlightProps;
-}
-
-function formatToBRL(number: number): string {
-  const formatted = number.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
-
-  return formatted;
 }
 
 export function Dashboard() {
@@ -91,22 +86,31 @@ export function Dashboard() {
       };
     });
 
+    setTransactions(transactionsFormatted);
     
     const total = entriesTotal - outputsTotal;
+
+    const formattedDateLastEntry = getLastTransactionDate(transactionsParsed, 'positive');
+    const formattedDateLastOutput = getLastTransactionDate(transactionsParsed, 'negative');
+    const totalInterval = `01 à ${formattedDateLastOutput}`;
     
     setHighlightData({
-      entries: { amount: formatToBRL(entriesTotal) },
-      outputs: { amount: formatToBRL(outputsTotal) },
-      total: { amount: formatToBRL(total) }
+      entries: {
+        amount: formatToBRL(entriesTotal),
+        dateLastTransaction: `Última entrada dia ${formattedDateLastEntry}`
+      },
+      outputs: {
+        amount: formatToBRL(outputsTotal),
+        dateLastTransaction: `Última saída dia ${formattedDateLastOutput}`
+      },
+      total: {
+        amount: formatToBRL(total),
+        dateLastTransaction: totalInterval
+      }
     });
 
-    setTransactions(transactionsFormatted);
     setIsLoading(false);
   }
-
-  useEffect(() => {
-    loadTransactions();
-  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -144,21 +148,21 @@ export function Dashboard() {
               type="up"
               title="Entradas"
               amount={highlightData.entries.amount}
-              lastTransaction="Última entrada dia 13 de abril"
+              lastTransaction={highlightData.entries.dateLastTransaction}
             />
 
             <HighlightCard
               type="down"
               title="Saídas"
               amount={highlightData.outputs.amount}
-              lastTransaction="Última saída dia 03 de abril"
+              lastTransaction={highlightData.outputs.dateLastTransaction}
             />
 
             <HighlightCard
               type="total"
               title="Total"
               amount={highlightData.total.amount}
-              lastTransaction="01 à 16 de abril"
+              lastTransaction={highlightData.total.dateLastTransaction}
             />
           </HighlightCards>
 
