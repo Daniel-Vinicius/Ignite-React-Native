@@ -99,7 +99,6 @@ export function Register() {
       const allTransactions = [...allOldTransactions, newTransaction];
 
       await AsyncStorage.setItem(collectionKeyTransactions, JSON.stringify(allTransactions));
-      console.log(allTransactions)
 
       reset();
       setTransactionType('');
