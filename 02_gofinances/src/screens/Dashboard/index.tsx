@@ -26,19 +26,52 @@ export interface DataListProps extends ITransactionCard {
   id: string;
 }
 
+interface HighlightProps {
+  amount: string;
+}
+
+interface HighlightData {
+  entries: HighlightProps;
+  outputs: HighlightProps;
+  total: HighlightProps;
+}
+
 export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
+  const [highlightData, setHighlightData] = useState<HighlightData>({
+    entries: { amount: 'R$0,00' },
+    total: { amount: 'R$0,00' },
+    outputs: { amount: 'R$0,00' }
+  });
+
   const collectionKeyTransactions = '@gofinances:transactions';
+
+  function formatToBRL(number: number): string {
+    const formatted = number.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+
+    return formatted;
+  }
 
   async function loadTransactions() {
     const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
     const transactionsParsed = transactionsStringified ? JSON.parse(transactionsStringified) : [];
 
-    const transactionsFormatted: DataListProps[] = transactionsParsed.map((item: any) => {
-      const amount = Number(item.amount).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      });
+    let entriesTotal = 0;
+    let outputsTotal = 0;
+
+    const transactionsFormatted: DataListProps[] = transactionsParsed.map((item: DataListProps) => {
+      if (item.type === 'positive') {
+        entriesTotal += Number(item.amount);
+      }
+
+      if (item.type === 'negative') {
+        outputsTotal += Number(item.amount);
+      }
+
+      const amount = formatToBRL(Number(item.amount));
 
       const date = Intl.DateTimeFormat('pt-BR', {
         day: '2-digit',
@@ -57,6 +90,14 @@ export function Dashboard() {
     });
 
     setTransactions(transactionsFormatted);
+
+    const total = entriesTotal - outputsTotal;
+
+    setHighlightData({
+      entries: { amount: formatToBRL(entriesTotal) },
+      outputs: { amount: formatToBRL(outputsTotal) },
+      total: { amount: formatToBRL(total) }
+    });
   }
 
   useEffect(() => {
@@ -89,9 +130,26 @@ export function Dashboard() {
       </Header>
 
       <HighlightCards>
-        <HighlightCard type="up" title="Entradas" amount="R$ 17.400,00" lastTransaction="Última entrada dia 13 de abril" />
-        <HighlightCard type="down" title="Saídas" amount="R$ 1.259,00" lastTransaction="Última saída dia 03 de abril" />
-        <HighlightCard type="total" title="Total" amount="R$ 16.141,00" lastTransaction="01 à 16 de abril" />
+        <HighlightCard
+          type="up"
+          title="Entradas"
+          amount={highlightData.entries.amount}
+          lastTransaction="Última entrada dia 13 de abril"
+        />
+
+        <HighlightCard
+          type="down"
+          title="Saídas"
+          amount={highlightData.outputs.amount}
+          lastTransaction="Última saída dia 03 de abril"
+        />
+
+        <HighlightCard
+          type="total"
+          title="Total"
+          amount={highlightData.total.amount}
+          lastTransaction="01 à 16 de abril"
+        />
       </HighlightCards>
 
       <Transactions>
