@@ -92,20 +92,23 @@ export function Dashboard() {
 
     const formattedDateLastEntry = getLastTransactionDate(transactionsParsed, 'positive');
     const formattedDateLastOutput = getLastTransactionDate(transactionsParsed, 'negative');
-    const totalInterval = `01 à ${formattedDateLastOutput}`;
+    const totalInterval = `01 à ${formattedDateLastOutput || formattedDateLastEntry}`;
     
     setHighlightData({
       entries: {
         amount: formatToBRL(entriesTotal),
-        dateLastTransaction: `Última entrada dia ${formattedDateLastEntry}`
+        dateLastTransaction: formattedDateLastEntry ?
+        `Última entrada dia ${formattedDateLastEntry}` : 'Sem entradas' 
       },
       outputs: {
         amount: formatToBRL(outputsTotal),
-        dateLastTransaction: `Última saída dia ${formattedDateLastOutput}`
+        dateLastTransaction: formattedDateLastOutput ?
+        `Última saída dia ${formattedDateLastOutput}` : 'Sem saídas'
       },
       total: {
         amount: formatToBRL(total),
-        dateLastTransaction: totalInterval
+        dateLastTransaction: formattedDateLastOutput || formattedDateLastEntry ?
+        totalInterval : 'Sem movimentações'
       }
     });
 

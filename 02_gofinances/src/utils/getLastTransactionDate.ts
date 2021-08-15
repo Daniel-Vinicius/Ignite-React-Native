@@ -7,6 +7,10 @@ export function getLastTransactionDate(transactions: DataListProps[], type: 'pos
     return new Date(transaction.date).getTime()
   });
 
+  if (!timestampsArrayTransactions[0]) {
+    return ''
+  }
+
   const lastTransactionTimestamp = Math.max.apply(Math, timestampsArrayTransactions);
 
   const dateLastTransaction = new Date(lastTransactionTimestamp);
