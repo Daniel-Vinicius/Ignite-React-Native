@@ -14,6 +14,8 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import uuid from 'react-native-uuid';
 
+import { collectionKeyTransactions } from '../../utils/collectionKeyTransactions';
+
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
@@ -52,7 +54,6 @@ export function Register() {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const navigation = useNavigation<NavigationProps>();
 
-  const collectionKeyTransactions = '@gofinances:transactions';
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',

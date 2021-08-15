@@ -7,7 +7,7 @@ interface ContainerProps {
 }
 
 export const Container = styled.View<ContainerProps>`
-  width: 90%;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.shape};
 
   flex-direction: row;

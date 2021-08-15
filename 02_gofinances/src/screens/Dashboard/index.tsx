@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, ITransactionCard } from '../../components/TransactionCard';
 
+import { collectionKeyTransactions } from '../../utils/collectionKeyTransactions';
 import { formatToBRL } from '../../utils/formatToBRL';
 import { getLastTransactionDate } from '../../utils/getLastTransactionDate';
 
@@ -50,7 +51,6 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   
   const theme = useTheme();
-  const collectionKeyTransactions = '@gofinances:transactions';
 
   async function loadTransactions() {
     const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
