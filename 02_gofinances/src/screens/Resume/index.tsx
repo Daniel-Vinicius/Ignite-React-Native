@@ -10,12 +10,12 @@ import { ptBR } from 'date-fns/locale';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from '@react-navigation/core';
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
 import { HistoryCard } from '../../components/HistoryCard';
 
 import { DataListProps } from '../Dashboard';
 
-import { collectionKeyTransactions } from '../../utils/collectionKeyTransactions';
 import { categories } from '../../utils/categories';
 import { formatToBRL } from '../../utils/formatToBRL';
 
@@ -47,6 +47,7 @@ export function Resume() {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
 
   const theme = useTheme();
+  const { user } = useAuth();
 
   function handleDateChange(action: 'next' | 'prev') {
     if (action === 'next') {
@@ -62,6 +63,7 @@ export function Resume() {
 
   async function loadData() {
     setIsLoading(true);
+    const collectionKeyTransactions = `@gofinances:transactions_user:${user.id}`;
 
     const response = await AsyncStorage.getItem(collectionKeyTransactions);
     const transactionsParsed = response ? JSON.parse(response) as DataListProps[] : [];

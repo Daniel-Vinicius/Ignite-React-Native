@@ -6,7 +6,6 @@ import { useTheme } from 'styled-components';
 import { useFocusEffect } from '@react-navigation/core';
 import { useAuth } from '../../hooks/auth';
 
-import { collectionKeyTransactions } from '../../utils/collectionKeyTransactions';
 import { formatToBRL } from '../../utils/formatToBRL';
 import { getLastTransactionDate } from '../../utils/getLastTransactionDate';
 
@@ -55,6 +54,8 @@ export function Dashboard() {
   const { signOut, user } = useAuth();
 
   async function loadTransactions() {
+    const collectionKeyTransactions = `@gofinances:transactions_user:${user.id}`;
+
     const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
     const transactionsParsed = transactionsStringified ? JSON.parse(transactionsStringified) : [];
 

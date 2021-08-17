@@ -4,7 +4,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as AuthSession from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
-import { collectionKeyUser } from "../utils/collectionKeyUser";
+const collectionKeyUser = '@gofinances:user';
+
 const { CLIENT_ID } = process.env;
 const { REDIRECT_URI } = process.env;
 

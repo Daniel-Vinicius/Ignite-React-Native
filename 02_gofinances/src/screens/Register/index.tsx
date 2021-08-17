@@ -9,12 +9,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import uuid from 'react-native-uuid';
-
-import { collectionKeyTransactions } from '../../utils/collectionKeyTransactions';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -52,12 +51,14 @@ const schema = Yup.object().shape({
 export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const navigation = useNavigation<NavigationProps>();
-
+  
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
   });
+  
+  const navigation = useNavigation<NavigationProps>();
+  const { user } = useAuth();
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -83,6 +84,8 @@ export function Register() {
     if (category.key === "category") {
       return Alert.alert('Selecione a categoria.');
     }
+
+    const collectionKeyTransactions = `@gofinances:transactions_user:${user.id}`;
 
     const newTransaction = {
       id: String(uuid.v4()),
