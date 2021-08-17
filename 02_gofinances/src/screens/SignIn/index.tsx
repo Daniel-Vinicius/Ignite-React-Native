@@ -20,7 +20,7 @@ import {
 } from './styles';
 
 export function SignIn() {
-  const { signInWithGoogle, user } = useAuth();
+  const { signInWithGoogle } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
@@ -36,8 +36,7 @@ export function SignIn() {
       <Header>
         <TitleWrapper>
           <LogoSvg width={RFValue(120)} height={RFValue(68)} />
-          { !user.name && <Title>Controle suas {'\n'} finanças de forma {'\n'} muito simples</Title> }
-          { user.name && <Title>{user.name}</Title> }
+          <Title>Controle suas {'\n'} finanças de forma {'\n'} muito simples</Title>
         </TitleWrapper>
         <SignTitle>Faça seu login com {'\n'} uma das contas abaixo</SignTitle>
       </Header>
