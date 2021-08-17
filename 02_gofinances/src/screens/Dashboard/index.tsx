@@ -101,17 +101,17 @@ export function Dashboard() {
       entries: {
         amount: formatToBRL(entriesTotal),
         dateLastTransaction: formattedDateLastEntry ?
-        `Última entrada dia ${formattedDateLastEntry}` : 'Sem entradas' 
+        `Última entrada dia ${formattedDateLastEntry}` : 'Não há entradas' 
       },
       outputs: {
         amount: formatToBRL(outputsTotal),
         dateLastTransaction: formattedDateLastOutput ?
-        `Última saída dia ${formattedDateLastOutput}` : 'Sem saídas'
+        `Última saída dia ${formattedDateLastOutput}` : 'Não há saídas'
       },
       total: {
         amount: formatToBRL(total),
         dateLastTransaction: formattedDateLastOutput || formattedDateLastEntry ?
-        totalInterval : 'Sem movimentações'
+        totalInterval : 'Não há transações'
       }
     });
 
