@@ -47,7 +47,7 @@ export const Footer = styled.View`
 `;
 
 export const FooterWrapper = styled.View`
-  margin-top: ${Platform.OS === 'ios' ? RFPercentage(-4) : RFPercentage(-2)}px;
+  margin-top: ${RFPercentage(-4)}px;
   padding: 0 32px;
 
   justify-content: space-between;

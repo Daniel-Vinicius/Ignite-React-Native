@@ -1,16 +1,17 @@
 import React, { useState, useCallback } from 'react';
 import { ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from 'styled-components';
 import { useFocusEffect } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { HighlightCard } from '../../components/HighlightCard';
-import { TransactionCard, ITransactionCard } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/auth';
 
 import { collectionKeyTransactions } from '../../utils/collectionKeyTransactions';
 import { formatToBRL } from '../../utils/formatToBRL';
 import { getLastTransactionDate } from '../../utils/getLastTransactionDate';
+
+import { HighlightCard } from '../../components/HighlightCard';
+import { TransactionCard, ITransactionCard } from '../../components/TransactionCard';
 
 import {
   Container,
@@ -51,6 +52,7 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   
   const theme = useTheme();
+  const { signOut, user } = useAuth();
 
   async function loadTransactions() {
     const transactionsStringified = await AsyncStorage.getItem(collectionKeyTransactions);
@@ -133,14 +135,14 @@ export function Dashboard() {
             <UserWrapper>
               <UserInfo>
                 <Photo
-                  source={{ uri: 'https://avatars.githubusercontent.com/u/66279500?v=4' }}
+                  source={{ uri: user.photo }}
                 />
                 <User>
                   <UserGreeting>Olá, </UserGreeting>
-                  <UserName>Daniel</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
