@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as AuthSession from 'expo-auth-session';
@@ -36,6 +36,7 @@ const AuthContext = createContext({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User);
+  const [userStorageLoading, setUserStorageLoading] = useState(true);
 
   async function signInWithGoogle() {
     try {
@@ -90,6 +91,20 @@ function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(error);      
     }
   }
+
+  useEffect(() => {
+    async function loadUserStorageData() {
+      const userInStorage = await AsyncStorage.getItem(collectionKeyUser);
+      
+      if (userInStorage) {
+        const userLogged = JSON.parse(userInStorage) as User;
+        setUser(userLogged);
+        setUserStorageLoading(false);
+      }
+    }
+
+    loadUserStorageData();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
