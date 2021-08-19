@@ -55,8 +55,8 @@
        <a href="https://www.linkedin.com/in/daniel-vinicius-viana/" title="Linkedin">@daniel-vinicius-viana</a>
     </td>
     <td align="center">
-      <a href="http://github.com/tavareshenrique/">
-        <img src="https://avatars0.githubusercontent.com/u/28929274?s=200&v=4" width="100px;" alt="Daniel Vinícius"/>
+      <a href="http://github.com/Rocketseat/">
+        <img src="https://avatars0.githubusercontent.com/u/28929274?s=200&v=4" width="100px;" alt="Rocketseat"/>
         <br />
         <sub>
           <b>Rocketseat</b>
