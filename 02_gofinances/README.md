@@ -18,11 +18,12 @@
 
 ## 💻 Projeto
 
-- Controle suas finanças de forma muito simples 💵.
+- Controle suas finanças de forma muito simples 💵
 
-- Este é um projeto desenvolvido durante o curso **[Ignite](https://rocketseat.com.br/ignite)**, feito pela **[@Rocketseat](https://github.com/Rocketseat)** na trilha React Native.
+- Este é um projeto desenvolvido durante o curso **[Ignite](https://rocketseat.com.br/ignite)**, feito pela **[@Rocketseat](https://github.com/Rocketseat)** na trilha React Native
 
-- [APK para download](https://drive.google.com/file/d/1CtUZPcjXsqdlEAcd_nVIxeHeOSi0Yad_/view?usp=sharing);
+- [APK para download no Android](https://drive.google.com/file/d/1CtUZPcjXsqdlEAcd_nVIxeHeOSi0Yad_/view?uspsharing)
+- [Projeto no Expo para teste](https://auth.expo.io/@danielviana/gofinances)
 
 ---
 
