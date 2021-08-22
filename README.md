@@ -43,6 +43,7 @@
 ## Chapter II
 
 [Desafio 2](https://github.com/Daniel-Vinicius/Savepass): O Desafio foi criar um App para gereciamento de senhas.
+[Desafio 3](https://github.com/Daniel-Vinicius/stream.data): O Desafio foi criar um App para consumir a API da Twitch.
 
 
 # :computer: Autores
