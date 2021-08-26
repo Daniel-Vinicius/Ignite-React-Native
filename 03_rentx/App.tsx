@@ -1,7 +1,5 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-
-import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 
 import { useFonts, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
@@ -26,7 +24,6 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar style="auto" translucent />
       <Home />
     </ThemeProvider>
   );
