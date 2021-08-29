@@ -71,7 +71,7 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" />
+        <Button title="Escolher período do aluguel" />
       </Footer>
     </Container>
   );
