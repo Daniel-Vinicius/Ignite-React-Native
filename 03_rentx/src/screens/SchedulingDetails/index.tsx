@@ -4,6 +4,10 @@ import { useTheme } from 'styled-components';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../routes/stack.routes';
+
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Accessory } from '../../components/Accessory';
@@ -42,8 +46,19 @@ import {
   RentalPriceTotal,
  } from './styles';
 
+ type SchedulingDetailsNavigationProp = StackNavigationProp<
+ RootStackParamList,
+ 'SchedulingDetails'
+>;
+
 export function SchedulingDetails() {
   const theme = useTheme();
+  const navigation = useNavigation<SchedulingDetailsNavigationProp>();
+
+  function handleConfirmRental() {
+    navigation.navigate('SchedulingComplete');
+  }
+
 
   return (
     <Container>
@@ -106,7 +121,11 @@ export function SchedulingDetails() {
       </Content>
 
       <Footer>
-        <Button title="Alugar agora" color={theme.colors.success} />
+        <Button
+          title="Alugar agora"
+          onPress={handleConfirmRental}
+          color={theme.colors.success}
+        />
       </Footer>
     </Container>
   );

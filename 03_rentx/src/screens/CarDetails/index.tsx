@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../routes/stack.routes';
+
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Accessory } from '../../components/Accessory';
@@ -29,7 +33,18 @@ import {
   Footer,
  } from './styles';
 
+ type CarDetailsNavigationProp = StackNavigationProp<
+ RootStackParamList,
+ 'CarDetails'
+>;
+
 export function CarDetails() {
+  const navigation = useNavigation<CarDetailsNavigationProp>();
+
+  function handleConfirmRental() {
+    navigation.navigate('Scheduling');
+  }
+
   return (
     <Container>
       <Header>
@@ -71,7 +86,10 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Escolher período do aluguel" />
+        <Button
+          title="Escolher período do aluguel"
+          onPress={handleConfirmRental}
+        />
       </Footer>
     </Container>
   );
