@@ -11,15 +11,23 @@ import { CarDTO } from '../dtos/CarDTO';
 
 const { Navigator, Screen } = createStackNavigator();
 
-export interface CarDetailsParams {
+type CarParams = {
   car: CarDTO;
+}
+
+export type CarDetailsParams = CarParams;
+export type SchedulingParams = CarParams;
+
+export interface SchedulingDetailsParams {
+  car: CarDTO;
+  dates: string[];
 }
 
 export type RootStackParamList = {
   Home: undefined;
   CarDetails: CarDetailsParams;
-  Scheduling: undefined;
-  SchedulingDetails: undefined;
+  Scheduling: SchedulingParams;
+  SchedulingDetails: SchedulingDetailsParams;
   SchedulingComplete: undefined;
 };
 
