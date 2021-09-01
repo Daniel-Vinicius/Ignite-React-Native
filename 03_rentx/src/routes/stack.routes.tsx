@@ -7,11 +7,17 @@ import { Scheduling } from '../screens/Scheduling';
 import { SchedulingDetails } from '../screens/SchedulingDetails';
 import { SchedulingComplete } from '../screens/SchedulingComplete';
 
+import { CarDTO } from '../dtos/CarDTO';
+
 const { Navigator, Screen } = createStackNavigator();
+
+export interface CarDetailsParams {
+  car: CarDTO;
+}
 
 export type RootStackParamList = {
   Home: undefined;
-  CarDetails: undefined;
+  CarDetails: CarDetailsParams;
   Scheduling: undefined;
   SchedulingDetails: undefined;
   SchedulingComplete: undefined;

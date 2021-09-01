@@ -32,8 +32,8 @@ export function Home() {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<HomeNavigationProp>();
 
-  function handleClickCardCar() {
-    navigation.navigate('CarDetails');
+  function handleClickCardCar(car: CarDTO) {
+    navigation.navigate('CarDetails', { car });
   }
 
   async function fetchCars() {
@@ -71,7 +71,7 @@ export function Home() {
         <CarList
           data={cars}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <Car data={item} onPress={handleClickCardCar} />}
+          renderItem={({ item }) => <Car data={item} onPress={() => handleClickCardCar(item)} />}
         />
       }
     </Container>
