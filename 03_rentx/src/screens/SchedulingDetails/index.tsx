@@ -85,7 +85,7 @@ export function SchedulingDetails() {
     });
 
     if (canDoRent) {
-      await api.post(`/schedules_byuser/${car.id}`, {
+      await api.post('/schedules_byuser', {
         user_id: 1,
         car,
         startDate: rentalPeriod.start,
