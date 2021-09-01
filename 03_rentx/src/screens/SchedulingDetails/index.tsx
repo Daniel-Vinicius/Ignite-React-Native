@@ -85,6 +85,11 @@ export function SchedulingDetails() {
     });
 
     if (canDoRent) {
+      await api.post(`/schedules_byuser/${car.id}`, {
+        user_id: 1,
+        car
+      });
+
       api.put(`/schedules_bycars/${car.id}`, {
         id: car.id,
         unavailable_dates,
