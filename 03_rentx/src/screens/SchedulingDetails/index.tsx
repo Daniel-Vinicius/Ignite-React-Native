@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 
 import { useTheme } from 'styled-components';
+import { format, addDays } from 'date-fns';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 
@@ -14,6 +16,7 @@ import { Accessory } from '../../components/Accessory';
 import { Button } from '../../components/Button';
 
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import { api } from '../../services/api';
 
 import {
   Container,
@@ -39,25 +42,70 @@ import {
   RentalPriceDetails,
   RentalPriceQuota,
   RentalPriceTotal,
- } from './styles';
+} from './styles';
 
- type SchedulingDetailsNavigationProp = StackNavigationProp<
- RootStackParamList,
- 'SchedulingDetails'
+type SchedulingDetailsNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'SchedulingDetails'
 >;
 
+interface RentalPeriod {
+  start: string;
+  end: string;
+}
+
 export function SchedulingDetails() {
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
+
   const theme = useTheme();
   const navigation = useNavigation<SchedulingDetailsNavigationProp>();
 
   const route = useRoute();
   const { car, dates } = route.params as SchedulingDetailsParams;
 
-  function handleConfirmRental() {
-    navigation.navigate('SchedulingComplete');
+  const numberDaily = dates.length;
+  const rentTotal = car.rent.price * numberDaily;
+
+  async function handleConfirmRental() {
+    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
+    const unavailable_dates_car_API = schedulesByCar.data.unavailable_dates as string[];
+    let canDoRent = true;
+
+    const unavailable_dates = [
+      ...unavailable_dates_car_API,
+      ...dates,
+    ];
+
+    dates.map(date => {
+      if (unavailable_dates_car_API.includes(date)) {
+        canDoRent = false;
+        const formattedDate = format(addDays(new Date(date), 1), 'dd/MM/yyyy');
+        return Alert.alert(`Já houve um aluguel na data: ${formattedDate}.`);
+      }
+    });
+
+    if (canDoRent) {
+      api.put(`/schedules_bycars/${car.id}`, {
+        id: car.id,
+        unavailable_dates,
+      })
+        .then(() => navigation.navigate('SchedulingComplete'))
+        .catch((error) => {
+          console.log(error);
+          return Alert.alert('Houve um erro ao tentar alugar este carro.');
+        });
+    }
   }
 
-  console.log(car, dates)
+  useEffect(() => {
+    const start = format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy');
+    const end = format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy');
+
+    setRentalPeriod({
+      start,
+      end,
+    });
+  }, []);
 
   return (
     <Container>
@@ -99,22 +147,22 @@ export function SchedulingDetails() {
 
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>28/08/2021</DateValue>
+            <DateValue>{rentalPeriod.start}</DateValue>
           </DateInfo>
 
           <Feather name="chevron-right" size={RFValue(24)} color={theme.colors.shape} />
 
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>
-            <DateValue>08/09/2021</DateValue>
+            <DateValue>{rentalPeriod.end}</DateValue>
           </DateInfo>
         </RentalPeriod>
 
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>
-            <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+            <RentalPriceQuota>R$ {car.rent.price} x{numberDaily} diárias</RentalPriceQuota>
+            <RentalPriceTotal>R$ {rentTotal}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
