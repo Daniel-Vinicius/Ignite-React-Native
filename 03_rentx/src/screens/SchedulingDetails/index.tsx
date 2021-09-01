@@ -56,6 +56,7 @@ interface RentalPeriod {
 
 export function SchedulingDetails() {
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
+  const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const navigation = useNavigation<SchedulingDetailsNavigationProp>();
@@ -67,6 +68,8 @@ export function SchedulingDetails() {
   const rentTotal = car.rent.price * numberDaily;
 
   async function handleConfirmRental() {
+    setLoading(true);
+
     const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
     const unavailable_dates_car_API = schedulesByCar.data.unavailable_dates as string[];
     let canDoRent = true;
@@ -78,29 +81,36 @@ export function SchedulingDetails() {
 
     dates.map(date => {
       if (unavailable_dates_car_API.includes(date)) {
-        canDoRent = false;
+        if (canDoRent) {
+          canDoRent = false;
+          setLoading(false);
+        }
+
         const formattedDate = format(addDays(new Date(date), 1), 'dd/MM/yyyy');
         return Alert.alert(`Já houve um aluguel na data: ${formattedDate}.`);
       }
     });
 
     if (canDoRent) {
-      await api.post('/schedules_byuser', {
-        user_id: 1,
-        car,
-        startDate: rentalPeriod.start,
-        endDate: rentalPeriod.end
-      });
-
-      api.put(`/schedules_bycars/${car.id}`, {
-        id: car.id,
-        unavailable_dates,
-      })
-        .then(() => navigation.navigate('SchedulingComplete'))
-        .catch((error) => {
-          console.log(error);
-          return Alert.alert('Houve um erro ao tentar alugar este carro.');
+      try {
+        await api.post('/schedules_byuser', {
+          user_id: 1,
+          car,
+          startDate: rentalPeriod.start,
+          endDate: rentalPeriod.end
         });
+
+        await api.put(`/schedules_bycars/${car.id}`, {
+          id: car.id,
+          unavailable_dates,
+        });
+
+        navigation.navigate('SchedulingComplete')
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        return Alert.alert('Houve um erro ao tentar alugar este carro.');
+      }
     }
   }
 
@@ -179,6 +189,8 @@ export function SchedulingDetails() {
           title="Alugar agora"
           onPress={handleConfirmRental}
           color={theme.colors.success}
+          enabled={!loading}
+          loading={loading}
         />
       </Footer>
     </Container>
