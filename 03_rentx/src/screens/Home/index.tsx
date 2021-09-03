@@ -25,7 +25,7 @@ import { CarDTO } from '../../dtos/CarDTO';
 import Logo from '../../assets/logo.svg';
 
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 import {
   Container,
@@ -119,7 +119,7 @@ export function Home() {
         </HeaderContent>
       </Header>
 
-      {loading ? <Load /> :
+      {loading ? <LoadAnimation /> :
         <CarList
           data={cars}
           keyExtractor={item => item.id}
