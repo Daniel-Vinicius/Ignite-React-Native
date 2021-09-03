@@ -34,6 +34,16 @@
    </a>
 </p>
 
+## Chapter III
+
+### Rentx
+
+<p align="center">
+  <a href="https://github.com/Daniel-Vinicius/Ignite-React-Native/tree/main/03_rentx">
+     <img src="https://svgshare.com/i/_oS.svg" alt="Rentx" width="280"/>
+   </a>
+</p>
+
 # :atom_symbol: Desafios
 
 ## Chapter I

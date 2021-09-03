@@ -23,7 +23,7 @@
 - Este é um projeto desenvolvido durante o curso **[Ignite](https://rocketseat.com.br/ignite)**, feito pela **[@Rocketseat](https://github.com/Rocketseat)** na trilha React Native
 
 - [APK para download no Android](https://drive.google.com/file/d/1CtUZPcjXsqdlEAcd_nVIxeHeOSi0Yad_/view?uspsharing)
-- [Projeto no Expo para teste](https://auth.expo.io/@danielviana/gofinances)
+- [Projeto no Expo para teste](https://expo.dev/@danielviana/gofinances)
 
 ---
 
