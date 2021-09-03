@@ -313,7 +313,10 @@
         "2021-09-15",
         "2021-09-16",
         "2021-09-17",
-        "2021-09-18"
+        "2021-09-18",
+        "2021-11-21",
+        "2021-11-22",
+        "2021-11-23"
       ]
     }
   ],
@@ -659,6 +662,55 @@
       "startDate": "19/09/2021",
       "endDate": "21/09/2021",
       "id": 7
+    },
+    {
+      "user_id": 1,
+      "car": {
+        "id": "59626707-88c5-4877-9350-07f372c0905a",
+        "brand": "mitsubishi",
+        "name": "Lancer",
+        "about": "Mitsubishi Lancer é um belo e agressivo carro. Além do mais, ele encanta pelo conforto e pela eficiência. Bastante firme e estável para dirigir com tranquilidade e segurança.",
+        "rent": {
+          "period": "Ao dia",
+          "price": 220
+        },
+        "fuel_type": "hybrid_motor",
+        "thumbnail": "https://storage.googleapis.com/golden-wind/ignite/react-native/thumbnails/6.png",
+        "accessories": [
+          {
+            "type": "speed",
+            "name": "180km/h"
+          },
+          {
+            "type": "acceleration",
+            "name": "2.0s"
+          },
+          {
+            "type": "turning_diameter",
+            "name": "600 HP"
+          },
+          {
+            "type": "hybrid_motor",
+            "name": "Híbrido"
+          },
+          {
+            "type": "exchange",
+            "name": "Auto"
+          },
+          {
+            "type": "seats",
+            "name": "5 pessoas"
+          }
+        ],
+        "photos": [
+          "https://storage.googleapis.com/golden-wind/ignite/react-native/images/15.png",
+          "https://storage.googleapis.com/golden-wind/ignite/react-native/images/16.png",
+          "https://storage.googleapis.com/golden-wind/ignite/react-native/images/17.png"
+        ]
+      },
+      "startDate": "21/11/2021",
+      "endDate": "23/11/2021",
+      "id": 8
     }
   ]
 }
