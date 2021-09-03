@@ -26,6 +26,7 @@ export interface SchedulingDetailsParams {
 }
 
 export type RootStackParamList = {
+  Splash: undefined;
   Home: undefined;
   CarDetails: CarDetailsParams;
   Scheduling: SchedulingParams;
