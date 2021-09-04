@@ -26,8 +26,19 @@ export function SignIn() {
       </Header>
 
       <Form>
-        <Input iconName="mail" />
-        <Input iconName="lock" />
+        <Input
+          iconName="mail"
+          placeholder="E-mail"
+          keyboardType="email-address"
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+
+        <Input
+          iconName="lock"
+          placeholder="Senha"
+          textContentType="password"
+        />
       </Form>
 
       <Footer>
