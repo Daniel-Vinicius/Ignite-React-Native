@@ -56,6 +56,9 @@
 
 [Desafio 3](https://github.com/Daniel-Vinicius/stream.data): O Desafio foi criar um App para consumir a API da Twitch.
 
+## Chapter III
+
+[Desafio 4](https://github.com/Daniel-Vinicius/github-explorer-react-native): O Desafio foi criar um App para explorar repositórios no Github.
 
 # :computer: Autores
 
