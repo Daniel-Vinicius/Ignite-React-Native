@@ -15,20 +15,35 @@ interface InputProps extends TextInputProps {
 }
 
 export function PasswordInput({ iconName, ...rest }: InputProps) {
-  const [isPasswordInvisible, setIsPasswordInvisible] = useState(true);
   const theme = useTheme();
+  const value = rest.value;
+
+  const [isPasswordInvisible, setIsPasswordInvisible] = useState(true);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
 
   function handlePasswordVisibilityChange() {
     setIsPasswordInvisible(prevState => !prevState);
   }
 
+  function handleInputFocus() {
+    setIsFocused(true);
+  }
+  
+  function handleInputBlur() {
+    setIsFocused(false);
+    setIsFilled(!!value);
+  }
+
+  const iconColor = (isFocused || isFilled) ? theme.colors.main : theme.colors.text_detail;
+
   return (
-    <Container>
+    <Container isFocused={isFocused}>
       <IconContainer>
         <Feather
           name={iconName}
           size={24}
-          color={theme.colors.text_detail}
+          color={iconColor}
         />
       </IconContainer>
 
@@ -37,6 +52,8 @@ export function PasswordInput({ iconName, ...rest }: InputProps) {
         secureTextEntry={isPasswordInvisible}
         autoCompleteType="password"
         textContentType="password"
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
       />
 
       <BorderlessButton onPress={handlePasswordVisibilityChange}>
