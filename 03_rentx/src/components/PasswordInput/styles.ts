@@ -19,6 +19,7 @@ export const IconContainer = styled.View`
 
 export const InputText = styled(TextInput)`
   flex: 1;
+  height: 56px;
 
   background-color: ${({ theme }) => theme.colors.background_secondary};
   color: ${({ theme }) => theme.colors.text};

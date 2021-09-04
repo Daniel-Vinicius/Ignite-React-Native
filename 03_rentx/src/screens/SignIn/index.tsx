@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components';
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
 
 import {
   Container,
@@ -29,15 +30,16 @@ export function SignIn() {
         <Input
           iconName="mail"
           placeholder="E-mail"
-          keyboardType="email-address"
-          autoCorrect={false}
           autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          autoCompleteType="email"
+          textContentType="emailAddress"
         />
 
-        <Input
+        <PasswordInput
           iconName="lock"
           placeholder="Senha"
-          textContentType="password"
         />
       </Form>
 
