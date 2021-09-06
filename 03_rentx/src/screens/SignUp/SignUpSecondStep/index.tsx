@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { useTheme } from 'styled-components'
 
-import { useRoute } from '@react-navigation/native';
-import { SignUpSecondStepParams } from '../../../routes/stack.routes';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { SignUpSecondStepParams, RootStackParamList } from '../../../routes/stack.routes';
 
+import { Confirmation } from '../../Confirmation';
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Button } from '../../../components/Button';
@@ -20,9 +22,15 @@ import {
   FormTitle
 } from './styles';
 
+type SignUpSecondStepNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'SignUpSecondStep'
+>;
+
 export function SignUpSecondStep() {
   const theme = useTheme();
   const route = useRoute();
+  const navigation = useNavigation<SignUpSecondStepNavigationProp>();
 
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -39,8 +47,13 @@ export function SignUpSecondStep() {
       return Alert.alert('As senhas não são iguais');
     }
 
-    // Send to API and Register
-    // Navigate to confirmation register screen
+    const confirmationScreenParams = {
+      title: 'Conta criada!',
+      message: `Agora é só fazer login\ne aproveitar.`,
+      nextScreenRoute: 'SignIn'
+    };
+
+    navigation.navigate('Confirmation', confirmationScreenParams);
   }
 
   return (

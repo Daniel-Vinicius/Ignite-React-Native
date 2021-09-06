@@ -105,7 +105,15 @@ export function SchedulingDetails() {
           unavailable_dates,
         });
 
-        navigation.navigate('SchedulingComplete')
+        const confirmationScreenParams = {
+          title: 'Carro alugado!',
+          message: `Agora você só precisa ir \n
+          até uma concessionaria da RENTX \n
+          pegar o seu automóvel.`,
+          nextScreenRoute: 'Home'
+        };
+    
+        navigation.navigate('Confirmation', confirmationScreenParams);
       } catch (error) {
         console.log(error);
         setLoading(false);
