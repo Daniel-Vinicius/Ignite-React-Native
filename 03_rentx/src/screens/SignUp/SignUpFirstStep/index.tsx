@@ -1,5 +1,10 @@
-import React from 'react';
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import * as Yup from 'yup';
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../routes/stack.routes';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -16,7 +21,40 @@ import {
   FormTitle
 } from './styles';
 
+
+type SignUpFirstStepNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'SignUpFirstStep'
+>;
+
 export function SignUpFirstStep() {
+  const navigation = useNavigation<SignUpFirstStepNavigationProp>();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [driverLicense, setDriverLicense] = useState('');
+
+  const fieldsIsFilled = Boolean(name) && Boolean(email) && Boolean(driverLicense);
+
+  async function handleNextStep() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string().required('CNH é obrigatória'),
+        email: Yup.string().required('E-mail obrigatório').email('Digite um email válido'),
+        name: Yup.string().required('O nome é obrigatório'),
+      });
+
+      const data = { name, email, driverLicense };
+      await schema.validate(data);
+
+      navigation.navigate('SignUpSecondStep', { user: data });
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        return Alert.alert('Opa', error.message);
+      }
+    }
+  }
+
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -35,7 +73,13 @@ export function SignUpFirstStep() {
           <Form>
             <FormTitle>1. Dados</FormTitle>
 
-            <Input iconName="user" placeholder="Nome" autoCompleteType="name" />
+            <Input
+              iconName="user"
+              placeholder="Nome"
+              autoCompleteType="name"
+              onChangeText={setName}
+              value={name}
+            />
 
             <Input
               iconName="mail"
@@ -45,12 +89,20 @@ export function SignUpFirstStep() {
               keyboardType="email-address"
               autoCompleteType="email"
               textContentType="emailAddress"
+              onChangeText={setEmail}
+              value={email}
             />
 
-            <Input iconName="credit-card" placeholder="CNH" keyboardType="numeric" />
+            <Input
+              iconName="credit-card"
+              placeholder="CNH"
+              keyboardType="numeric"
+              onChangeText={setDriverLicense}
+              value={driverLicense}
+            />
           </Form>
 
-          <Button title="Próximo" />
+          <Button title="Próximo" onPress={handleNextStep} enabled={fieldsIsFilled} />
         </Container>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
