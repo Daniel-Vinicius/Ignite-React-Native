@@ -107,9 +107,7 @@ export function SchedulingDetails() {
 
         const confirmationScreenParams = {
           title: 'Carro alugado!',
-          message: `Agora você só precisa ir \n
-          até uma concessionaria da RENTX \n
-          pegar o seu automóvel.`,
+          message: `Agora você só precisa ir\naté uma concessionaria da RENTX\npegar o seu automóvel.`,
           nextScreenRoute: 'Home'
         };
     
