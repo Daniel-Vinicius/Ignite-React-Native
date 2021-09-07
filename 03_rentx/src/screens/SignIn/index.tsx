@@ -6,9 +6,10 @@ import {
   Keyboard,
   Alert
 } from 'react-native';
-import * as Yup from 'yup';
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
+import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../routes/stack.routes';
@@ -33,6 +34,7 @@ type SignInNavigationProp = StackNavigationProp<
 
 export function SignIn() {
   const theme = useTheme();
+  const { signIn } = useAuth();
   const navigation = useNavigation<SignInNavigationProp>();
 
   const [email, setEmail] = useState('');
@@ -49,6 +51,7 @@ export function SignIn() {
       });
   
       await schema.validate({ email, password });
+      signIn({ email, password });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert('Opa', error.message);
