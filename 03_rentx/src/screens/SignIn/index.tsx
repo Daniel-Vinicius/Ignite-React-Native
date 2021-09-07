@@ -12,7 +12,7 @@ import { useAuth } from '../../hooks/auth';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../routes/stack.routes';
+import { AuthRoutesParams } from '../../routes/routeTypes';
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -28,7 +28,7 @@ import {
 } from './styles';
 
 type SignInNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  AuthRoutesParams,
   'SignIn'
 >;
 

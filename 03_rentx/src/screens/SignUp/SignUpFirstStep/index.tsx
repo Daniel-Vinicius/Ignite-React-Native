@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../routes/stack.routes';
+import { AuthRoutesParams } from '../../../routes/routeTypes';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -23,7 +23,7 @@ import {
 
 
 type SignUpFirstStepNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  AuthRoutesParams,
   'SignUpFirstStep'
 >;
 

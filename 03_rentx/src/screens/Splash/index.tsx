@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../routes/stack.routes';
 
 import Animated, {
   useSharedValue,
@@ -20,14 +19,9 @@ import {
   Container,
  } from './styles';
 
-type SplashNavigationProp = StackNavigationProp<
- RootStackParamList,
- 'Splash'
->;
-
 export function Splash() {
   const splashAnimation = useSharedValue(0);
-  const navigation = useNavigation<SplashNavigationProp>();
+  const navigation = useNavigation();
 
   const brandStyle = useAnimatedStyle(() => {
     return {
@@ -56,7 +50,7 @@ export function Splash() {
   });
 
   function startApp() {
-    navigation.navigate('Home');
+    navigation.navigate('SignIn');
   }
 
   useEffect(() => {

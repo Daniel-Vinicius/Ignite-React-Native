@@ -4,8 +4,7 @@ import { useTheme } from 'styled-components';
 import { format, addDays } from 'date-fns';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, SchedulingParams } from '../../routes/stack.routes';
+import { SchedulingParams, SchedulingNavigationProp } from './NavigationProp';
 
 import { BackButton } from '../../components/BackButton';
 import { Button } from '../../components/Button';
@@ -30,11 +29,6 @@ import {
   Content,
   Footer,
 } from './styles';
-
-type SchedulingNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Scheduling'
->;
 
 interface RentalPeriod {
   startFormatted: string;

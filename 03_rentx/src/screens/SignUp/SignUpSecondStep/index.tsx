@@ -3,8 +3,7 @@ import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 
 import { useTheme } from 'styled-components'
 
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { SignUpSecondStepParams, RootStackParamList } from '../../../routes/stack.routes';
+import { SignUpSecondStepParams, SignUpSecondStepNavigationProp } from './NavigationProp';
 
 import { api } from '../../../services/api';
 
@@ -22,11 +21,6 @@ import {
   Form,
   FormTitle
 } from './styles';
-
-type SignUpSecondStepNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'SignUpSecondStep'
->;
 
 export function SignUpSecondStep() {
   const theme = useTheme();

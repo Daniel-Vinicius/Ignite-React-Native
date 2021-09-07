@@ -11,8 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { CarDetailsParams, RootStackParamList } from '../../routes/stack.routes';
+import { CarDetailsNavigationProp, CarDetailsParams } from './NavigationProp';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -35,11 +34,6 @@ import {
   Accessories,
   Footer,
 } from './styles';
-
-type CarDetailsNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'CarDetails'
->;
 
 export function CarDetails() {
   const navigation = useNavigation<CarDetailsNavigationProp>();

@@ -7,8 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, SchedulingDetailsParams } from '../../routes/stack.routes';
+import { SchedulingDetailsNavigationProp, SchedulingDetailsParams } from './NavigationProp';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -44,11 +43,6 @@ import {
   RentalPriceTotal,
 } from './styles';
 
-type SchedulingDetailsNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'SchedulingDetails'
->;
-
 interface RentalPeriod {
   start: string;
   end: string;
@@ -65,7 +59,7 @@ export function SchedulingDetails() {
   const { car, dates } = route.params as SchedulingDetailsParams;
 
   const numberDaily = dates.length;
-  const rentTotal = car.rent.price * numberDaily;
+  const rentTotal = car.price * numberDaily;
 
   async function handleConfirmRental() {
     setLoading(true);
@@ -148,8 +142,8 @@ export function SchedulingDetails() {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>R$ {car.rent.price}</Price>
+            <Period>{car.period}</Period>
+            <Price>R$ {car.price}</Price>
           </Rent>
         </Details>
 
@@ -184,7 +178,7 @@ export function SchedulingDetails() {
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ {car.rent.price} x{numberDaily} diárias</RentalPriceQuota>
+            <RentalPriceQuota>R$ {car.price} x{numberDaily} diárias</RentalPriceQuota>
             <RentalPriceTotal>R$ {rentTotal}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
