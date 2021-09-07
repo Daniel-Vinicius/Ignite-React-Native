@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { SplashNavigationProp } from './NavigationProp';
 
 import Animated, {
   useSharedValue,
@@ -21,7 +21,7 @@ import {
 
 export function Splash() {
   const splashAnimation = useSharedValue(0);
-  const navigation = useNavigation();
+  const navigation = useNavigation<SplashNavigationProp>();
 
   const brandStyle = useAnimatedStyle(() => {
     return {

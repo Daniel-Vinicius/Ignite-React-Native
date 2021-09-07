@@ -14,7 +14,7 @@ export type AppStackRoutesParams = {
 };
 
 export type AppTabRoutesParams = {
-  Home: undefined;
+  AppHome: undefined;
   MyCars: undefined;
   Profile: undefined;
 };

@@ -11,8 +11,7 @@ import { useAuth } from '../../hooks/auth';
 
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { AuthRoutesParams } from '../../routes/routeTypes';
+import { SignInNavigationProp } from './NavigationProp';
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -26,11 +25,6 @@ import {
   Form,
   Footer
 } from './styles';
-
-type SignInNavigationProp = StackNavigationProp<
-  AuthRoutesParams,
-  'SignIn'
->;
 
 export function SignIn() {
   const theme = useTheme();
@@ -49,16 +43,16 @@ export function SignIn() {
         password: Yup.string()
           .required('A Senha é obrigatória')
       });
-  
+
       await schema.validate({ email, password });
-      signIn({ email, password });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert('Opa', error.message);
       }
-
-      return Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, verifique as credenciais')
     }
+
+    signIn({ email, password })
+      .catch(() => Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, verifique as credenciais'));
   }
 
   function handleNewAccount() {

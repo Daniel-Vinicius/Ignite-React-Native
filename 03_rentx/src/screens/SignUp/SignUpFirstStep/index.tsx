@@ -3,8 +3,7 @@ import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 
 import * as Yup from 'yup';
 
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { AuthRoutesParams } from '../../../routes/routeTypes';
+import { SignUpFirstStepNavigationProp } from './NavigationProp';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -20,12 +19,6 @@ import {
   Form,
   FormTitle
 } from './styles';
-
-
-type SignUpFirstStepNavigationProp = StackNavigationProp<
-  AuthRoutesParams,
-  'SignUpFirstStep'
->;
 
 export function SignUpFirstStep() {
   const navigation = useNavigation<SignUpFirstStepNavigationProp>();

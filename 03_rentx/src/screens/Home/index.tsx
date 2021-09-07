@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import { useNavigation } from '@react-navigation/native';
+import { HomeNavigationProp } from './NavigationProp';
 
 import { api } from '../../services/api';
 import { CarDTO } from '../../dtos/CarDTO';
@@ -24,7 +25,7 @@ export function Home() {
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeNavigationProp>();
 
   function handleClickCardCar(car: CarDTO) {
     navigation.navigate('CarDetails', { car });
