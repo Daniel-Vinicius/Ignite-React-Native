@@ -6,7 +6,8 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SignUpSecondStepParams, RootStackParamList } from '../../../routes/stack.routes';
 
-import { Confirmation } from '../../Confirmation';
+import { api } from '../../../services/api';
+
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Button } from '../../../components/Button';
@@ -38,7 +39,17 @@ export function SignUpSecondStep() {
   const fieldsIsFilled = Boolean(password) && Boolean(passwordConfirmation);
   const { user } = route.params as SignUpSecondStepParams;
 
-  function handleRegister() {
+  function navigateToConfirmationScreen() {
+    const confirmationScreenParams = {
+      title: 'Conta criada!',
+      message: `Agora é só fazer login\ne aproveitar.`,
+      nextScreenRoute: 'SignIn'
+    };
+
+    navigation.navigate('Confirmation', confirmationScreenParams);
+  }
+
+  async function handleRegister() {
     if (!password || !passwordConfirmation) {
       return Alert.alert('Informe e confirme a senha');
     }
@@ -47,13 +58,21 @@ export function SignUpSecondStep() {
       return Alert.alert('As senhas não são iguais');
     }
 
-    const confirmationScreenParams = {
-      title: 'Conta criada!',
-      message: `Agora é só fazer login\ne aproveitar.`,
-      nextScreenRoute: 'SignIn'
-    };
+    await api.post('/users', {
+      name: user.name,
+      email: user.email,
+      driver_license: user.driverLicense,
+      password,
+    })
+    .then(navigateToConfirmationScreen)
+    .catch((error) => {
+      if (error?.response?.data?.message) {
+        const errorMessage = error.response.data.message as string;
+        return Alert.alert('Não foi possível cadastrar', errorMessage)
+      }
 
-    navigation.navigate('Confirmation', confirmationScreenParams);
+      return Alert.alert('Não foi possível cadastrar');
+    });
   }
 
   return (
