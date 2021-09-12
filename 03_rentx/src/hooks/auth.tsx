@@ -33,6 +33,7 @@ interface SignInCredentials {
 interface AuthContextData {
   user: User;
   signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -65,8 +66,22 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
     } catch (error) {
-      // @ts-expect-error
-      throw new Error(error);
+      throw new Error(String(error));
+    }
+  }
+
+  async function signOut() {
+    try {
+      const userCollection = database.get<ModelUser>('users');
+      await database.write(async () => {
+        const userSelected = await userCollection.find(data.id);
+        await userSelected.destroyPermanently();
+      });
+
+      setData({} as User);
+      api.defaults.headers.authorization = '';
+    } catch (error) {
+      throw new Error(String(error));
     }
   }
 
@@ -90,7 +105,8 @@ function AuthProvider({ children }: AuthProviderProps) {
     <AuthContext.Provider
       value={{
         user: data,
-        signIn
+        signIn,
+        signOut
       }}
     >
       {children}

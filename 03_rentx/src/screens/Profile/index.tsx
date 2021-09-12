@@ -31,14 +31,12 @@ type Option = 'dataEdit' | 'passwordEdit';
 
 export function Profile() {
   const theme = useTheme();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const [option, setOption] = useState<Option>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
-
-  function handleSignOut() { }
 
   function handleOptionChange(optionSelected: Option) {
     setOption(optionSelected)
@@ -69,7 +67,7 @@ export function Profile() {
             <HeaderTop>
               <BackButton color={theme.colors.shape} />
               <HeaderTitle>Editar Perfil</HeaderTitle>
-              <LogoutButton onPress={handleSignOut}>
+              <LogoutButton onPress={signOut}>
                 <Feather
                   name="power"
                   size={24}
