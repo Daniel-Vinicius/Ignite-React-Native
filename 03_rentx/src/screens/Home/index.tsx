@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { StatusBar, Button } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+
 import { useNetInfo } from '@react-native-community/netinfo';
+import { synchronize } from '@nozbe/watermelondb/sync';
+import { database } from '../../database';
+import { Car as ModelCar } from '../../database/model/Car';
 
 import { useNavigation } from '@react-navigation/native';
 import { HomeNavigationProp } from './NavigationProp';
@@ -33,15 +37,53 @@ export function Home() {
     navigation.navigate('CarDetails', { car });
   }
 
+  async function offlineSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const response = await api.get(`/cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
+
+        const { changes, latestVersion } = response.data;
+        return { changes, timestamp: latestVersion }
+      },
+
+      pushChanges: async ({ changes }) => {
+        const user = changes.users;
+
+        try {
+          await api.post(`/users/sync`, user);
+        } catch (error) {
+          console.log("### ERRO ao sincronizar usuário ###")
+          console.log(JSON.stringify(error))
+        }
+      },
+    });
+  }
+
   useEffect(() => {
     let isMounted = true;
 
     async function fetchCars() {
       try {
-        const response = await api.get<CarDTO[]>('/cars');
+        const carCollection = database.get<ModelCar>('cars');
+        const carsResponse = await carCollection.query().fetch();
+        const cars = carsResponse.map((car) => {
+          return {
+            id: car.id,
+            brand: car.brand,
+            name: car.name,
+            about: car.about,
+            fuel_type: car.fuel_type,
+            thumbnail: car.thumbnail,
+            period: car.period,
+            price: car.price,
+            photos: [],
+            accessories: [],
+          }
+        });
 
         if (isMounted) {
-          setCars(response.data);
+          setCars(cars);
         }
 
       } catch (error) {
@@ -61,10 +103,8 @@ export function Home() {
   }, []);
 
   useEffect(() => {
-    if (netInfo.isConnected) {
-      Alert.alert('Online')
-    } else {
-      Alert.alert('Offline')
+    if (netInfo.isConnected === true) {
+      offlineSynchronize()
     }
   }, [netInfo.isConnected]);
 
@@ -83,6 +123,8 @@ export function Home() {
 
         </HeaderContent>
       </Header>
+
+      <Button title="Sincronizar" onPress={offlineSynchronize} />
 
       {loading ? <LoadAnimation /> :
         <CarList

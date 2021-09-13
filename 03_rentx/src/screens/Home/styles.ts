@@ -1,5 +1,4 @@
 import { FlatList } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
