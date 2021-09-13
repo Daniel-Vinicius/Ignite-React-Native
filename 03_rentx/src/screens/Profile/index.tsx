@@ -101,13 +101,17 @@ export function Profile() {
       [
         {
           text: 'Cancelar',
-          onPress: () => {}
+          onPress: () => {},
+          style: 'cancel'
         },
         {
           text: 'Sair',
           onPress: signOut
         }
-      ]
+      ],
+      {
+        cancelable: true
+      }
     );
   }
 
