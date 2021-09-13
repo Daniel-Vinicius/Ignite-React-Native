@@ -11,9 +11,10 @@ import {
 
 interface InputProps extends TextInputProps {
   iconName: React.ComponentProps<typeof Feather>['name'];
+  disabled?: boolean;
 }
 
-export function Input({ iconName, ...rest }: InputProps) {
+export function Input({ iconName, disabled = false, ...rest }: InputProps) {
   const theme = useTheme();
   const value = rest.value;
 
@@ -33,7 +34,7 @@ export function Input({ iconName, ...rest }: InputProps) {
 
   return (
     <Container>
-      <IconContainer isFocused={isFocused}>
+      <IconContainer isFocused={isFocused} style={{ opacity: disabled ? 0.5 : 1 }}>
         <Feather
           name={iconName}
           size={24}
@@ -45,6 +46,7 @@ export function Input({ iconName, ...rest }: InputProps) {
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         isFocused={isFocused}
+        style={{ opacity: disabled ? 0.5 : 1 }}
         {...rest}
       />
     </Container>

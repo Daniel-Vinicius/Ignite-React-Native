@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+
 import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
+import * as Yup from 'yup';
 
 import { useTheme } from 'styled-components';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -10,6 +12,7 @@ import { useAuth } from '../../hooks/auth';
 import { BackButton } from '../../components/BackButton';
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
+import { Button } from '../../components/Button';
 
 import {
   Container,
@@ -31,12 +34,15 @@ type Option = 'dataEdit' | 'passwordEdit';
 
 export function Profile() {
   const theme = useTheme();
-  const { user, signOut } = useAuth();
+  const { user, signOut, updatedUser } = useAuth();
 
   const [option, setOption] = useState<Option>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
+
+  const nameAndDriverLicenseNoChanged = name === user.name && driverLicense === user.driver_license;
+  const DataUpdateButtonEnabled = name && driverLicense && !nameAndDriverLicenseNoChanged || avatar !== user.avatar;
 
   function handleOptionChange(optionSelected: Option) {
     setOption(optionSelected)
@@ -56,6 +62,35 @@ export function Profile() {
 
     if (result.uri) {
       setAvatar(result.uri)
+    }
+  }
+
+  async function handleProfileUpdate() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string()
+          .required('CNH é obrigatória'),
+        name: Yup.string()
+          .required('Nome é obrigatório'),
+      });
+
+      const data = { name, driverLicense };
+      await schema.validate(data);
+
+      await updatedUser({
+        ...user,
+        name,
+        driver_license: driverLicense,
+        avatar,
+      });
+
+      Alert.alert('Perfil atualizado');
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert('Opa', error.message);
+      } else {
+        Alert.alert('Não foi possível atualizar o perfil');
+      }
     }
   }
 
@@ -119,6 +154,7 @@ export function Profile() {
                   iconName="mail"
                   editable={false}
                   defaultValue={user.email}
+                  disabled
                 />
 
                 <Input
@@ -148,6 +184,20 @@ export function Profile() {
                   placeholder="Repetir senha"
                 />
               </Section>
+            )}
+
+            {option === 'dataEdit' && (
+              <Button
+                title="Salvar alterações"
+                onPress={handleProfileUpdate}
+                enabled={DataUpdateButtonEnabled}
+              />
+            )}
+
+            {option === 'passwordEdit' && (
+              <Button
+                title="Salvar alterações"
+              />
             )}
           </Content>
         </Container>
