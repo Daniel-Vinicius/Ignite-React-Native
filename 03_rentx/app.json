@@ -9,7 +9,7 @@
     "description": "App para aluguel de carros",
     "githubUrl": "https://github.com/Daniel-Vinicius/Ignite-React-Native/tree/main/03_rentx",
     "assetBundlePatterns": [
-      "**/*"
+      "node_modules/@expo/vector-icons/**/*"
     ],
     "splash": {
       "image": "./assets/splash.png",

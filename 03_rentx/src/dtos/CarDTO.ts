@@ -20,6 +20,6 @@ export interface CarDTO {
   thumbnail: string;
   period: string;
   price: number;
-  photos: Photo[];
-  accessories: Accessory[];
+  photos?: Photo[];
+  accessories?: Accessory[];
 };

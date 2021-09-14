@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { useTheme } from 'styled-components';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useAuth } from '../../hooks/auth';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 import { BackButton } from '../../components/BackButton';
 import { Input } from '../../components/Input';
@@ -35,6 +36,7 @@ type Option = 'dataEdit' | 'passwordEdit';
 export function Profile() {
   const theme = useTheme();
   const { user, signOut, updatedUser } = useAuth();
+  const { isConnected } = useNetInfo();
 
   const [option, setOption] = useState<Option>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
@@ -45,6 +47,10 @@ export function Profile() {
   const DataUpdateButtonEnabled = name && driverLicense && !nameAndDriverLicenseNoChanged || avatar !== user.avatar;
 
   function handleOptionChange(optionSelected: Option) {
+    if (isConnected !== true && optionSelected === 'passwordEdit') {
+      return Alert.alert('Você está offline', 'Para mudar a senha, conecte-se a internet');
+    }
+
     setOption(optionSelected)
   }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, Button } from 'react-native';
+import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -53,7 +53,6 @@ export function Home() {
         try {
           await api.post(`/users/sync`, user);
         } catch (error) {
-          console.log("### ERRO ao sincronizar usuário ###")
           console.log(JSON.stringify(error))
         }
       },
@@ -77,8 +76,6 @@ export function Home() {
             thumbnail: car.thumbnail,
             period: car.period,
             price: car.price,
-            photos: [],
-            accessories: [],
           }
         });
 
@@ -123,8 +120,6 @@ export function Home() {
 
         </HeaderContent>
       </Header>
-
-      <Button title="Sincronizar" onPress={offlineSynchronize} />
 
       {loading ? <LoadAnimation /> :
         <CarList
