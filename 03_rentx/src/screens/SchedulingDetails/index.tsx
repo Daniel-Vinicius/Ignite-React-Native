@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 
 import { useTheme } from 'styled-components';
+
 import { format, addDays } from 'date-fns';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
@@ -44,8 +45,10 @@ import {
 } from './styles';
 
 interface RentalPeriod {
-  start: string;
-  end: string;
+  start: Date;
+  startFormatted: string;
+  end: Date;
+  endFormatted: string;
 }
 
 export function SchedulingDetails() {
@@ -64,61 +67,38 @@ export function SchedulingDetails() {
   async function handleConfirmRental() {
     setLoading(true);
 
-    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
-    const unavailable_dates_car_API = schedulesByCar.data.unavailable_dates as string[];
-    let canDoRent = true;
+    try {
+      await api.post('/rentals', {
+        car_id: car.id,
+        start_date: rentalPeriod.start,
+        end_date: rentalPeriod.end,
+        total: rentTotal
+      });
 
-    const unavailable_dates = [
-      ...unavailable_dates_car_API,
-      ...dates,
-    ];
+      const confirmationScreenParams = {
+        title: 'Carro alugado!',
+        message: `Agora você só precisa ir\naté uma concessionaria da RENTX\npegar o seu automóvel.`,
+        nextScreenRoute: 'Home'
+      };
 
-    dates.map(date => {
-      if (unavailable_dates_car_API.includes(date)) {
-        if (canDoRent) {
-          canDoRent = false;
-          setLoading(false);
-        }
-
-        const formattedDate = format(addDays(new Date(date), 1), 'dd/MM/yyyy');
-        return Alert.alert(`Já houve um aluguel na data: ${formattedDate}.`);
-      }
-    });
-
-    if (canDoRent) {
-      try {
-        await api.post('/schedules_byuser', {
-          user_id: 1,
-          car,
-          startDate: rentalPeriod.start,
-          endDate: rentalPeriod.end
-        });
-
-        await api.put(`/schedules_bycars/${car.id}`, {
-          id: car.id,
-          unavailable_dates,
-        });
-
-        const confirmationScreenParams = {
-          title: 'Carro alugado!',
-          message: `Agora você só precisa ir\naté uma concessionaria da RENTX\npegar o seu automóvel.`,
-          nextScreenRoute: 'Home'
-        };
-    
-        navigation.navigate('Confirmation', confirmationScreenParams);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-        return Alert.alert('Houve um erro ao tentar alugar este carro.');
-      }
+      navigation.navigate('Confirmation', confirmationScreenParams);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      return Alert.alert('Houve um erro ao tentar alugar este carro.');
     }
   }
 
   useEffect(() => {
-    const start = format(addDays(new Date(dates[0]), 1), 'dd/MM/yyyy');
-    const end = format(addDays(new Date(dates[dates.length - 1]), 1), 'dd/MM/yyyy');
+    const start = addDays(new Date(dates[0]), 1);
+    const startFormatted = format(start, 'dd/MM/yyyy');
+
+    const end = addDays(new Date(dates[dates.length - 1]), 1);
+    const endFormatted = format(end, 'dd/MM/yyyy');
 
     setRentalPeriod({
+      startFormatted,
+      endFormatted,
       start,
       end,
     });
@@ -131,7 +111,7 @@ export function SchedulingDetails() {
       </Header>
 
       <CarImages>
-        <ImageSlider imagesUrl={car.photos} />
+        <ImageSlider imagesUrl={car.photos!} />
       </CarImages>
 
       <Content>
@@ -148,7 +128,7 @@ export function SchedulingDetails() {
         </Details>
 
         <Accessories>
-          {car.accessories.map(accessory => (
+          {car.accessories!.map(accessory => (
             <Accessory
               key={accessory.type}
               name={accessory.name}
@@ -164,14 +144,14 @@ export function SchedulingDetails() {
 
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>{rentalPeriod.start}</DateValue>
+            <DateValue>{rentalPeriod.startFormatted}</DateValue>
           </DateInfo>
 
           <Feather name="chevron-right" size={RFValue(24)} color={theme.colors.shape} />
 
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>
-            <DateValue>{rentalPeriod.end}</DateValue>
+            <DateValue>{rentalPeriod.endFormatted}</DateValue>
           </DateInfo>
         </RentalPeriod>
 

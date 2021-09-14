@@ -67,7 +67,7 @@ export function CarDetails() {
   });
 
   function handleConfirmRental() {
-    navigation.navigate('Scheduling', { car });
+    navigation.navigate('Scheduling', { car: carShown });
   }
 
   useEffect(() => {
