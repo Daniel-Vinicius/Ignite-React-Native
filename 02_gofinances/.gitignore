@@ -55,3 +55,6 @@ web-build/
 
 # ENV
 .env
+
+# Coverage
+coverage
