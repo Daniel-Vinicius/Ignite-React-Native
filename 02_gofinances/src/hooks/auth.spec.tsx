@@ -21,7 +21,7 @@ describe('Auth Hook', () => {
   it('should be able to sign in with Google account existing', async () => {
     const googleMocked = mocked(startAsync as any);
 
-    googleMocked.mockReturnValue({
+    googleMocked.mockReturnValueOnce({
       type: 'success',
       params: {
         access_token: 'any_token',
@@ -42,13 +42,7 @@ describe('Auth Hook', () => {
 
   it('user should not connect if cancel authentication with Google', async () => {
     const googleMocked = mocked(startAsync as any);
-
-    googleMocked.mockReturnValue({
-      type: 'cancel',
-      params: {
-        access_token: 'any_token',
-      }
-    });
+    googleMocked.mockReturnValueOnce({ type: 'cancel' });
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: AuthProvider
