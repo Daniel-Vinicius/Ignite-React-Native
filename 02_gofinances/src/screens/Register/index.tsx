@@ -51,12 +51,12 @@ const schema = Yup.object().shape({
 export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  
+
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
   });
-  
+
   const navigation = useNavigation<NavigationProps>();
   const { user } = useAuth();
 
@@ -69,9 +69,7 @@ export function Register() {
   }
 
   function handleOpenSelectCategoryModal() {
-    setTimeout(() => {
-      setCategoryModalOpen(true);
-    }, 1000);
+    setCategoryModalOpen(true);
   }
 
   function handleCloseSelectCategoryModal() {
