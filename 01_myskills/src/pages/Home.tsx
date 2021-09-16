@@ -51,6 +51,7 @@ export function Home() {
       <Text style={styles.title} testID="welcome">Welcome, Daniel</Text>
       <Text style={styles.greetings}>{greetings}</Text>
       <TextInput
+        testID="input-new"
         style={styles.input}
         placeholder="New Skill"
         placeholderTextColor="#555"
@@ -58,7 +59,8 @@ export function Home() {
         onChangeText={setNewSkill}
       />
 
-      <Button 
+      <Button
+        testID="button-add"
         onPress={handleAddNewSkill}
         title="Add"
         disabled={Boolean(!newSkill.trim())}
