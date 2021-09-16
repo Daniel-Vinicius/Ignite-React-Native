@@ -11,16 +11,25 @@ describe('Home', () => {
     await expect(element(by.id('welcome'))).toBeVisible();
   });
 
-  it('check register a new skill', async () => {
+  it('Skill flow', async () => {
     const inputNewSkill = element(by.id('input-new'));
     const buttonAdd = element(by.id('button-add'));
+    const flatListSkills = element(by.id('flat-list-skills'));
 
     await inputNewSkill.tap();
     await inputNewSkill.typeText('React Native');
+    await flatListSkills.tap();
 
     await buttonAdd.tap();
 
     await expect(inputNewSkill).toHaveText('');
-    await expect(element(by.text('React Native'))).toBeVisible();
+
+    const skillCard = element(by.text('React Native'));
+
+    await expect(skillCard).toBeVisible();
+
+    await skillCard.longPress();
+
+    await expect(skillCard).not.toExist();
   });
 });
