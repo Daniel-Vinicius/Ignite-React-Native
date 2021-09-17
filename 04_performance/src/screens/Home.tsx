@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { FriendList } from '../components/FriendList';
-import { Friend } from '../components/Friend';
 
 import {
   View,
