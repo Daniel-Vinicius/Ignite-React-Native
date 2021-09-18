@@ -4,7 +4,6 @@ import { FriendList } from '../components/FriendList';
 
 import {
   View,
-  ScrollView,
   Text,
   TextInput,
   StyleSheet,
@@ -40,9 +39,7 @@ export function Home() {
         onPress={handleSearch}
       />
 
-      <ScrollView style={styles.list}>
-        <FriendList follow={handleFollow} data={friends} />
-      </ScrollView>
+      <FriendList follow={handleFollow} data={friends} />
     </View>
   );
 };
@@ -63,8 +60,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 7,
     marginBottom: 10
-  },
-  list: {
-    marginTop: 20
   }
 });
