@@ -1,4 +1,4 @@
-package com.myskills; // Altere para o seu pacote
+package com.danielvinicius.myskills; // Altere para o seu pacote
 
 import android.content.Intent;
 import android.os.Bundle;
