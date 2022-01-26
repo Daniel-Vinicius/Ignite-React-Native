@@ -20,7 +20,7 @@
 
 <p align="center">
   <a href="https://github.com/Daniel-Vinicius/Ignite-React-Native/tree/main/01_myskills">
-     <img src="https://svgshare.com/i/_KC.svg" alt="My Skills" width="280"/>
+     <img src="https://github.com/Daniel-Vinicius/Ignite-React-Native/blob/main/01_myskills/resources/android/logo.png" alt="My Skills" width="280"/>
    </a>
 </p>
 
