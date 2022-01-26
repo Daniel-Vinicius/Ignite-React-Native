@@ -40,7 +40,7 @@
 
 <p align="center">
   <a href="https://github.com/Daniel-Vinicius/Ignite-React-Native/tree/main/03_rentx">
-     <img src="https://svgshare.com/i/_oS.svg" alt="Rentx" width="280"/>
+     <img src="https://github.com/Daniel-Vinicius/Ignite-React-Native/blob/main/03_rentx/assets/icon.png" alt="Rentx" width="280"/>
    </a>
 </p>
 
