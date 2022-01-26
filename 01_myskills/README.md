@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="https://svgshare.com/i/_KC.svg" alt="My Skills" width="280"/>
+   <img src="https://github.com/Daniel-Vinicius/Ignite-React-Native/blob/main/01_myskills/resources/android/logo.png" alt="My Skills" width="280"/>
 </p>
 
 <p align="center">
