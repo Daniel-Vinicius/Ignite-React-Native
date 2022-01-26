@@ -30,7 +30,7 @@
 
 <p align="center">
   <a href="https://github.com/Daniel-Vinicius/Ignite-React-Native/tree/main/02_gofinances">
-     <img src="https://svgshare.com/i/_Kt.svg" alt="Go Finances" width="280"/>
+     <img src="https://github.com/Daniel-Vinicius/Ignite-React-Native/blob/main/02_gofinances/assets/icon.png" alt="Go Finances" width="280"/>
    </a>
 </p>
 
